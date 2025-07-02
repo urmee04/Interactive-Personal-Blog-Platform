@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personal Blog</title>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Interactive Personal Blog</h2>
+      <form action="" method="post">
+        <!-- Input Section -->
+        <label for="title">Create post</label>
+        <input
+          type="text"
+          id="posttitle"
+          placeholder="What's on your mind?"
+          required
+        />
+        <label for="text">Message</label>
+        <input type="textarea" id="textarea" placeholder="" required />
+        <button id="addPostButton">POST</button>
+        <!-- Post Display Section -->
+        <h3>All Posts</h3>
+        <ul id="postList"></ul>
+      </form>
+    </div>
+  </body>
+</html>
