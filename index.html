@@ -7,30 +7,36 @@
   </head>
   <body>
     <div class="container">
-      <h2>Interactive Personal Blog</h2>
-      <form action="" method="post">
-        <!-- Input Section -->
-        <label for="title">Create post</label>
-        <input
-          type="text"
-          id="posttitle"
-          placeholder="What's on your mind?"
-          required
-        />
-        <br />
-        <br />
-        <label for="postContent">Message</label>
-        <textarea
-          id="postContent"
-          placeholder="Type here..."
-          rows="5"
-          required
-        ></textarea>
-        <button id="addPostButton">POST</button>
-        <!-- Post Display Section -->
-        <h3>All Posts</h3>
-        <ul id="postList"></ul>
-      </form>
+      <main class="blog-app">
+        <section class="post-creator">
+          <h2>Create a New Post</h2>
+          <form id="createPostForm">
+            <div class="form-group">
+              <label for="postTitle">Title</label>
+              <input
+                type="text"
+                id="postTitle"
+                placeholder="What's on your mind?"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="postContent">Content</label>
+              <textarea
+                id="postContent"
+                placeholder="Type here..."
+                rows="5"
+                required
+              ></textarea>
+            </div>
+            <button type="submit" id="addPostButton">POST</button>
+          </form>
+        </section>
+        <section class="post-display">
+          <h3>All Posts</h3>
+          <ul id="postList"></ul>
+        </section>
+      </main>
     </div>
   </body>
 </html>
