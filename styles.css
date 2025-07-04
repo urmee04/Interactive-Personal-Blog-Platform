@@ -70,3 +70,9 @@ button {
 button:hover {
   background-color: #2607ed;
 }
+
+.post-display h3 {
+  margin-top: 0;
+  color: #333;
+  text-align: center;
+}
