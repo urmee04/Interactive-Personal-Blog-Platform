@@ -4,12 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Personal Blog</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="container">
       <main class="blog-app">
         <section class="post-creator">
-          <h2>Create a New Post</h2>
+          <h2>Create Post</h2>
           <form id="createPostForm">
             <div class="form-group">
               <label for="postTitle">Title</label>
@@ -29,12 +30,8 @@
                 required
               ></textarea>
             </div>
-            <button type="submit" id="addPostButton">POST</button>
+            <button type="submit" id="addPostButton">Post</button>
           </form>
-        </section>
-        <section class="post-display">
-          <h3>All Posts</h3>
-          <ul id="postList"></ul>
         </section>
       </main>
     </div>
