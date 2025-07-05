@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
         editButton.innerHTML = "✏️"; // Pen icon
         editButton.title = "Edit post";
 
-        // Add edit functionality
+        // add edit functionality
         editButton.addEventListener("click", function () {
           pageTitle.value = titleElement.textContent;
           pageContent.value = contentElement.textContent;
@@ -82,18 +82,27 @@ document.addEventListener("DOMContentLoaded", function () {
             "Update";
           pageTitle.focus();
         });
-
+        // add delete functionality
+        const deleteBtn = document.createElement("button");
+        deleteBtn.classList.add("delete-btn");
+        deleteBtn.innerHTML = "🗑️"; // Trash icon
+        deleteBtn.title = "Delete post";
+        deleteBtn.addEventListener("click", function () {
+          if (confirm("Are you sure you want to delete this post?")) {
+            postItem.remove();
+          }
+        });
         const postActions = document.createElement("div");
         postActions.classList.add("post-actions");
-        postActions.appendChild(editButton);
+        postActions.append(editButton, deleteBtn);
 
         // append all elements to the list item
         postItem.append(titleElement, contentElement, dateElement, postActions);
 
-        // Add new post at the top of the list
+        // add new post at the top of the list
         postList.insertBefore(postItem, postList.firstChild);
       }
-      // Clear the form
+      // clear the form
       form.reset();
     } else {
       // set error message based on missing fields
