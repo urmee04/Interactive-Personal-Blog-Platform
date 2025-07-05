@@ -5,6 +5,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("createPostForm");
   // find the list element where posts will be displayed
   const postList = document.getElementById("postList");
+  const pageTitle = document.getElementById("postTitle");
+  const pageContent = document.getElementById("postContent");
+
+  let currentEditingPost = null;
   // listen for the 'submit' event on the form, like when the user clicks the POST button
   form.addEventListener("submit", function (e) {
     //  prevent the browser's default behavior, which is to reload the page on form submission
@@ -19,27 +23,59 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // render new post with title, content, and timestamp
     if (title && content) {
-      // create list item
-      const postItem = document.createElement("li");
-      // create title element
-      const titleElement = document.createElement("h4");
-      titleElement.classList.add("post-title");
-      titleElement.textContent = title;
-      // create content element
-      const contentElement = document.createElement("p");
-      contentElement.classList.add("post-content");
-      contentElement.textContent = content;
+      if (currentEditingPost) {
+        // update existing post
+        const postItem = currentEditingPost;
+        postItem.querySelector(".post-title").textContent = title;
+        postItem.querySelector(".post-content").textContent = content;
+        postItem.querySelector(
+          ".post-date"
+        ).textContent = `Updated on ${dateTime}`;
+        currentEditingPost = null;
+        // Change button text back to "Post"
+        document.querySelector("button[type='submit']").textContent = "Post";
+      } else {
+        // create list item
+        const postItem = document.createElement("li");
+        // create title element
+        const titleElement = document.createElement("h4");
+        titleElement.classList.add("post-title");
+        titleElement.textContent = title;
+        // create content element
+        const contentElement = document.createElement("p");
+        contentElement.classList.add("post-content");
+        contentElement.textContent = content;
 
-      //create date element
-      const dateElement = document.createElement("p");
-      dateElement.classList.add("post-date");
-      dateElement.textContent = `Posted on ${dateTime}`;
+        //create date element
+        const dateElement = document.createElement("p");
+        dateElement.classList.add("post-date");
+        dateElement.textContent = `Posted on ${dateTime}`;
+        // Create edit button with pen icon
+        const editButton = document.createElement("button");
+        editButton.classList.add("edit-btn");
+        editButton.innerHTML = "✏️"; // Pen icon
+        editButton.title = "Edit post";
 
-      // append all elements to the list item
-      postItem.append(titleElement, contentElement, dateElement);
+        // Add edit functionality
+        editButton.addEventListener("click", function () {
+          pageTitle.value = titleElement.textContent;
+          pageContent.value = contentElement.textContent;
+          currentEditingPost = postItem;
+          document.querySelector("button[type='submit']").textContent =
+            "Update";
+          titleInput.focus();
+        });
 
-      // Add new post at the top of the list
-      postList.insertBefore(postItem, postList.firstChild);
+        const postActions = document.createElement("div");
+        postActions.classList.add("post-actions");
+        postActions.appendChild(editButton);
+
+        // append all elements to the list item
+        postItem.append(titleElement, contentElement, dateElement);
+
+        // Add new post at the top of the list
+        postList.insertBefore(postItem, postList.firstChild);
+      }
       // Clear the form
       form.reset();
     } else {
