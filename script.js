@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const postList = document.getElementById("postList");
   const pageTitle = document.getElementById("postTitle");
   const pageContent = document.getElementById("postContent");
-  const submitBtn = document.querySelector("button[type='submit]");
+  const submitBtn = document.querySelector("button[type='submit']");
   let currentEditingPost = null;
 
   // function to show error messages
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
           currentEditingPost = postItem;
           document.querySelector("button[type='submit']").textContent =
             "Update";
-          titleInput.focus();
+          pageTitle.focus();
         });
 
         const postActions = document.createElement("div");
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
         postActions.appendChild(editButton);
 
         // append all elements to the list item
-        postItem.append(titleElement, contentElement, dateElement);
+        postItem.append(titleElement, contentElement, dateElement, postActions);
 
         // Add new post at the top of the list
         postList.insertBefore(postItem, postList.firstChild);
