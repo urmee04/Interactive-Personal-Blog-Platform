@@ -1,23 +1,26 @@
-// Wait until the entire HTML document is fully loaded and ready
+// wait until the entire HTML document is fully loaded and ready
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Find the form element on the page by its ID and store it in a variable
+  // find the form element on the page by its ID and store it in a variable
   const form = document.getElementById("createPostForm");
-  // Find the list element where posts will be displayed
+  // find the list element where posts will be displayed
   const postList = document.getElementById("postList");
-  // Listen for the 'submit' event on the form, like when the user clicks the POST button
+  // listen for the 'submit' event on the form, like when the user clicks the POST button
   form.addEventListener("submit", function (e) {
-    //  Prevent the browser's default behavior, which is to reload the page on form submission
+    //  prevent the browser's default behavior, which is to reload the page on form submission
     e.preventDefault();
     const title = document.getElementById("postTitle").value;
     const content = document.getElementById("postContent").value;
-    // Create a new Date object for the current moment and format it as a readable string
+    // create a new Date object for the current moment and format it as a readable string
     const dateTime = new Date().toLocaleString();
+    // clear any existing errors
+    const existingError = document.querySelector(".error-msg");
+    if (existingError) existingError.remove();
 
-    // Render new post with title, content, and timestamp
+    // render new post with title, content, and timestamp
     if (title && content) {
       // create list item
-      const postItem = document.createComment("li");
+      const postItem = document.createElement("li");
       // create title element
       const titleElement = document.createElement("h4");
       titleElement.classList.add("post-title");
@@ -30,17 +33,15 @@ document.addEventListener("DOMContentLoaded", function () {
       //create date element
       const dateElement = document.createElement("p");
       dateElement.classList.add("post-date");
-      dateElement.textContent = `Posted on ${date}`;
+      dateElement.textContent = `Posted on ${dateTime}`;
 
       // append all elements to the list item
-      postItem.appendChild(titleElement, contentElement, dateElement);
+      postItem.append(titleElement, contentElement, dateElement);
 
       // Add new post at the top of the list
-      if (postList.firstChild) {
-        postList.insertBefore(postItem, postList.firstChild);
-      } else {
-        postList.appendChild(postItem);
-      }
+      postList.insertBefore(postItem, postList.firstChild);
+      // Clear the form
+      form.reset();
     } else {
       // create error container
       const errorElement = document.createElement("div");
@@ -54,6 +55,14 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         errorElement.textContent = "please enter content";
       }
+
+      // insert error messages after the form
+      form.parentNode.insertBefore(errorElement, form.nextSibling);
+
+      // remove error after 5 seconds
+      setTimeout(() => {
+        errorElement.remove();
+      }, 5000);
     }
   });
 });
