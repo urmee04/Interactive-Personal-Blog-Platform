@@ -61,64 +61,74 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector("button[type='submit']").textContent = "Post";
       } else {
         // function to create list item
-        function createPostElement(title, content,date, isNew=true){
-        const postItem = document.createElement("li");
-        // create title element
-        const titleElement = document.createElement("h4");
-        titleElement.classList.add("post-title");
-        titleElement.textContent = title;
-        // create content element
-        const contentElement = document.createElement("p");
-        contentElement.classList.add("post-content");
-        contentElement.textContent = content;
+        function createPostElement(title, content, date, isNew = true) {
+          const postItem = document.createElement("li");
+          // create title element
+          const titleElement = document.createElement("h4");
+          titleElement.classList.add("post-title");
+          titleElement.textContent = title;
+          // create content element
+          const contentElement = document.createElement("p");
+          contentElement.classList.add("post-content");
+          contentElement.textContent = content;
 
-        //create date element
-        const dateElement = document.createElement("p");
-        dateElement.classList.add("post-date");
-        dateElement.textContent = `Posted on ${dateTime}`;
-        // Create edit button with pen icon
-        const editButton = document.createElement("button");
-        editButton.classList.add("edit-btn");
-        editButton.innerHTML = "✏️"; // Pen icon
-        editButton.title = "Edit post";
+          //create date element
+          const dateElement = document.createElement("p");
+          dateElement.classList.add("post-date");
+          dateElement.textContent = `Posted on ${dateTime}`;
+          // Create edit button with pen icon
+          const editButton = document.createElement("button");
+          editButton.classList.add("edit-btn");
+          editButton.innerHTML = "✏️"; // Pen icon
+          editButton.title = "Edit post";
 
-        // add edit functionality
-        editButton.addEventListener("click", function () {
-          pageTitle.value = titleElement.textContent;
-          pageContent.value = contentElement.textContent;
-          currentEditingPost = postItem;
-          document.querySelector("button[type='submit']").textContent =
-            "Update";
-          pageTitle.focus();
-        });
-        // add delete functionality
-        const deleteBtn = document.createElement("button");
-        deleteBtn.classList.add("delete-btn");
-        deleteBtn.innerHTML = "🗑️"; // Trash icon
-        deleteBtn.title = "Delete post";
-        deleteBtn.addEventListener("click", function () {
-          if (confirm("Are you sure you want to delete this post?")) {
-            postItem.remove();
-            // remove from localstorage
-            posts = posts.filter(
-                (P)=>P.title!==title||P.content!==content||P.date!==date
-            );
-            localStorage.setItem("posts", JSON.stringify(postItem));
+          // add edit functionality
+          editButton.addEventListener("click", function () {
+            pageTitle.value = titleElement.textContent;
+            pageContent.value = contentElement.textContent;
+            currentEditingPost = postItem;
+            document.querySelector("button[type='submit']").textContent =
+              "Update";
+            pageTitle.focus();
+          });
+          // add delete functionality
+          const deleteBtn = document.createElement("button");
+          deleteBtn.classList.add("delete-btn");
+          deleteBtn.innerHTML = "🗑️"; // Trash icon
+          deleteBtn.title = "Delete post";
+          deleteBtn.addEventListener("click", function () {
+            if (confirm("Are you sure you want to delete this post?")) {
+              postItem.remove();
+              // remove from localstorage
+              posts = posts.filter(
+                (P) =>
+                  P.title !== title || P.content !== content || P.date !== date
+              );
+              localStorage.setItem("posts", JSON.stringify(postItem));
+            }
+          });
+          const postActions = document.createElement("div");
+          postActions.classList.add("post-actions");
+          postActions.append(editButton, deleteBtn);
+
+          // append all elements to the list item
+          postItem.append(
+            titleElement,
+            contentElement,
+            dateElement,
+            postActions
+          );
+
+          // add new post at the top of the list
+          if (isNew) {
+            postList.insertBefore(postItem, postList.firstChild);
+          } else {
+            postList.appendChild(postItem);
           }
-        });
-        const postActions = document.createElement("div");
-        postActions.classList.add("post-actions");
-        postActions.append(editButton, deleteBtn);
-
-        // append all elements to the list item
-        postItem.append(titleElement, contentElement, dateElement, postActions);
-        
-        // add new post at the top of the list
-        postList.insertBefore(postItem, postList.firstChild);
+        }
+        // clear the form
+        form.reset();
       }
-      // clear the form
-      form.reset();
-    } else {
       // set error message based on missing fields
       if (!title && !content) {
         showError("please enter title and content");
