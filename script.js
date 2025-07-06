@@ -9,6 +9,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const pageContent = document.getElementById("postContent");
   const submitBtn = document.querySelector("button[type='submit']");
   let currentEditingPost = null;
+  let posts = JSON.parse(localStorage.getItem("posts")) || [];
+  // Load saved posts on page load
+  function loadPosts() {
+    postList.innerHTML = "";
+    posts.forEach((post) => {
+      createPostElement(post.title, post.content, post.date, false);
+    });
+  }
 
   // function to show error messages
   function showError(message) {
@@ -52,7 +60,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // Change button text back to "Post"
         document.querySelector("button[type='submit']").textContent = "Post";
       } else {
-        // create list item
+        // function to create list item
+        function createPostElement(title, content,date, isNew=true){
         const postItem = document.createElement("li");
         // create title element
         const titleElement = document.createElement("h4");
@@ -90,6 +99,11 @@ document.addEventListener("DOMContentLoaded", function () {
         deleteBtn.addEventListener("click", function () {
           if (confirm("Are you sure you want to delete this post?")) {
             postItem.remove();
+            // remove from localstorage
+            posts = posts.filter(
+                (P)=>P.title!==title||P.content!==content||P.date!==date
+            );
+            localStorage.setItem("posts", JSON.stringify(postItem));
           }
         });
         const postActions = document.createElement("div");
@@ -98,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // append all elements to the list item
         postItem.append(titleElement, contentElement, dateElement, postActions);
-
+        
         // add new post at the top of the list
         postList.insertBefore(postItem, postList.firstChild);
       }
