@@ -11,13 +11,14 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentEditingPost = null;
   let currentEditingIndex = -1; // use -1 to indicate no post is being edited
   let posts = JSON.parse(localStorage.getItem("posts")) || [];
+
   // function to load all posts from 'posts'
   function loadPosts() {
     postList.innerHTML = ""; // Clear the list before re-rendering
     // reverse the array for display to show newest first without altering the original array
-    [...posts].reverse().forEach((post, index) => {
+    [...posts].reverse().forEach((post, reverseIndex) => {
       // calculate the correct index in the original 'posts' array
-      const originalIndex = posts.length - 1 - index;
+      const originalIndex = posts.length - 1 - reverseIndex;
       createPostElement(post, originalIndex);
     });
   }
@@ -41,23 +42,28 @@ document.addEventListener("DOMContentLoaded", function () {
       errorElement.remove();
     }, 3000);
   }
+
   // function to create a single post element in the dom
-  function createPostElement(title, content, date, isNew = true) {
+  function createPostElement(post, index) {
     const postItem = document.createElement("li");
     postItem.classList.add("post-card"); //added for styling consistency
+
+    // Determine if this is the newest post
+    const isNew = index === posts.length - 1;
+
     // create title element
     const titleElement = document.createElement("h4");
-    titleElement.classList.add("post-title");
-    titleElement.textContent = title;
+    titleElement.textContent = post.title;
+
     // create content element
     const contentElement = document.createElement("p");
-    contentElement.classList.add("post-content");
-    contentElement.textContent = content;
+    contentElement.textContent = post.content;
 
     //create date element
     const dateElement = document.createElement("p");
     dateElement.classList.add("post-date");
     dateElement.textContent = `Posted on ${post.date}`;
+
     // Create edit button with pen icon
     const editButton = document.createElement("button");
     editButton.classList.add("edit-btn");
@@ -66,8 +72,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // add edit functionality
     editButton.addEventListener("click", function () {
-      pageTitle.value = post.title;
-      pageContent.value = post.content;
+      pageTitle.value = titleElement.textContent;
+      pageContent.value = contentElement.textContent;
       submitBtn.textContent = "Update";
 
       pageTitle.focus();
@@ -75,6 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
       currentEditingPost = postItem;
       currentEditingIndex = index;
     });
+
     // add delete functionality
     const deleteBtn = document.createElement("button");
     deleteBtn.classList.add("delete-btn");
@@ -84,11 +91,13 @@ document.addEventListener("DOMContentLoaded", function () {
       if (confirm("Are you sure you want to delete this post?")) {
         postItem.remove();
         posts.splice(index, 1);
-        localStorage.setItem("posts", JSON.stringify(postItem));
+        //  save the updated posts array
+        localStorage.setItem("posts", JSON.stringify(posts));
         // re-index all posts after deletion
         loadPosts();
       }
     });
+
     const postActions = document.createElement("div");
     postActions.classList.add("post-actions");
     postActions.append(editButton, deleteBtn);
@@ -96,15 +105,16 @@ document.addEventListener("DOMContentLoaded", function () {
     // append all elements to the list item
     postItem.append(titleElement, contentElement, dateElement, postActions);
 
-    // add new post at the top of the list
+    // Insert at top if new, otherwise append
     if (isNew) {
       postList.insertBefore(postItem, postList.firstChild);
     } else {
       postList.appendChild(postItem);
     }
   }
+
   //  prevent the browser's default behavior, which is to reload the page on form submission
-  // listen for the 'submit' event on the form, like when the user clicks the POST button
+  // listen for the 'submit' event on the form, like when the user clicks the Post button
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     const title = pageTitle.value.trim();
@@ -124,22 +134,27 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    if (currentEditingPost) {
+    // check the index for edit mode
+    if (currentEditingIndex > -1) {
       // update existing post
       posts[currentEditingIndex] = { title, content, date: dateTime };
       localStorage.setItem("posts", JSON.stringify(posts));
       loadPosts(); // reload all posts to ensure proper indexing
-      currentEditingPost = null;
+
       currentEditingIndex = -1;
       submitBtn.textContent = "Post";
     } else {
-      // Create new post
+      //create new post
       const newPost = { title, content, date: dateTime };
-      posts.unshift(newPost); // Add to beginning of array
+      posts.push(newPost); // Add to the end of array
       localStorage.setItem("posts", JSON.stringify(posts));
-      createPostElement(title, content, dateTime, 0, true);
     }
 
+    //save the updated array and refresh the list
+    loadPosts();
     form.reset();
   });
+
+  //initial load of posts when the page is ready
+  loadPosts();
 });
