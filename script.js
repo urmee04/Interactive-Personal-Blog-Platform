@@ -41,9 +41,10 @@ document.addEventListener("DOMContentLoaded", function () {
       errorElement.remove();
     }, 3000);
   }
-  // function to create list item
+  // function to create a single post element in the dom
   function createPostElement(title, content, date, isNew = true) {
     const postItem = document.createElement("li");
+    postItem.classList.add("post-card"); //added for styling consistency
     // create title element
     const titleElement = document.createElement("h4");
     titleElement.classList.add("post-title");
@@ -56,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //create date element
     const dateElement = document.createElement("p");
     dateElement.classList.add("post-date");
-    dateElement.textContent = `Posted on ${dateTime}`;
+    dateElement.textContent = `Posted on ${post.date}`;
     // Create edit button with pen icon
     const editButton = document.createElement("button");
     editButton.classList.add("edit-btn");
@@ -65,11 +66,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // add edit functionality
     editButton.addEventListener("click", function () {
-      pageTitle.value = titleElement.textContent;
-      pageContent.value = contentElement.textContent;
-      currentEditingPost = postItem;
-      document.querySelector("button[type='submit']").textContent = "Update";
+      pageTitle.value = post.title;
+      pageContent.value = post.content;
+      submitBtn.textContent = "Update";
+
       pageTitle.focus();
+      // set both the element and its index for editing
+      currentEditingPost = postItem;
+      currentEditingIndex = index;
     });
     // add delete functionality
     const deleteBtn = document.createElement("button");
@@ -115,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } else if (!title) {
       showError("please enter a title");
       return;
-    } else {
+    } else if (!content) {
       showError("please enter content");
       return;
     }
