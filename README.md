@@ -82,29 +82,30 @@ I structured the HTML semantically and wrote modular JavaScript functions for re
 
 - Inserts a node in the DOM before a reference node. You use this when showing error messages just after the form.
 
-[Element.remove()] (https://developer.mozilla.org/docs/Web/API/ChildNode/remove)
-Removes a node from the DOM. Used both for deleting posts and clearing error messages.
-MDN:
+[Element.remove()](https://developer.mozilla.org/docs/Web/API/ChildNode/remove)
 
-[Array.prototype.splice()] ( https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/splice)
+- Removes a node from the DOM. Used both for deleting posts and clearing error messages.
+
+[Array.prototype.splice()](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/splice)
 
 - Changes the contents of an array by removing or replacing existing elements. You splice out deleted posts.
 
-[localStorage.getItem() / localStorage.setItem()] (https://developer.mozilla.org/docs/Web/API/Window/localStorage)
+[localStorage.getItem() / localStorage.setItem()](https://developer.mozilla.org/docs/Web/API/Window/localStorage)
 
 - Reads from and writes to the browser’s key/value storage.
 
-[JSON.parse() / JSON.stringify()] ( https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON)
+[JSON.parse() / JSON.stringify()](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON)
 
 - Converts between JavaScript objects/arrays and their JSON string representations for storage.
 
-[setTimeout()] (https://developer.mozilla.org/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout)
+[setTimeout()](https://developer.mozilla.org/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout)
 
 - Schedules a function to run after a specified delay (used here to auto‑clear error messages).
 
-[Element.createElement()] (https://developer.mozilla.org/docs/Web/API/Document/createElement)
-Creates new DOM elements (e.g. <li>, <button>, <p>, etc.).
+[Element.createElement()](https://developer.mozilla.org/docs/Web/API/Document/createElement)
 
-[Node.append() / Node.appendChild()] (https://developer.mozilla.org/docs/Web/API/Node/append)
+- Creates new DOM elements (e.g. <li>, <button>, <p>, etc.).
+
+[Node.append() / Node.appendChild()](https://developer.mozilla.org/docs/Web/API/Node/append)
 
 - Appends nodes or strings to a parent node.
