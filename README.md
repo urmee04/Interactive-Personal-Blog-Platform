@@ -104,7 +104,7 @@ I structured the HTML semantically and wrote modular JavaScript functions for re
 
 [Element.createElement()](https://developer.mozilla.org/docs/Web/API/Document/createElement)
 
-- Creates new DOM elements (e.g. <li>, <button>, <p>, etc.).
+- Creates new DOM elements
 
 [Node.append() / Node.appendChild()](https://developer.mozilla.org/docs/Web/API/Node/append)
 
